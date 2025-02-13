@@ -36,4 +36,15 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sanju-naik72_project-ss_7c7d8e37-e107-4cfb-a044-4c4106ec3c1b -Dsonar.projectName='project-ss'
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=sanju-naik72_project-ss_7c7d8e37-e107-4cfb-a044-4c4106ec3c1b \
+            -Dsonar.projectName='project-ss' \
+            -DforkCount=1 \
+            -Dsurefire.memoryLimits=2G \
+            -DargLine="-Xmx2G"
+      - name: Upload Surefire Logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: surefire-logs
+          path: target/surefire-reports/
