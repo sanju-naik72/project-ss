@@ -1,15 +1,12 @@
-name: Notify Slack
+name: Workflow B
 
 on:
-  workflow_run:
-    workflows: ["Build and Test"]
-    types:
-      - completed
+  repository_dispatch:
+    types: [trigger-workflow-b]
 
 jobs:
-  notify:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Notify
-        run: echo "Send Slack notification: Build succeeded!"
+      - name: Deploy stuff
+        run: echo "🚀 Workflow B triggered via repository_dispatch!"
